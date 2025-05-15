@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom' 
-
+import Button from '../components/Button'
 const features = [
   {
     id: 1,
@@ -85,14 +85,13 @@ const Home = () => {
                         <p className='text-lg md:text-xl text-gray-200 mb-8 max-w-2xl text-center'>
                             Train with professional coaches and unlock your potential
                         </p>
-                        <button 
+                        <Button 
+                            variant="primary"
+                            size="large"
                             onClick={() => navigate('/programs')}
-                            className='px-8 py-4 bg-amber-500 text-white font-semibold rounded-lg 
-                                     hover:bg-amber-600 transition-colors duration-300 
-                                     shadow-lg hover:shadow-amber-500/20'
                         >
                             Explore Programs
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </section>
