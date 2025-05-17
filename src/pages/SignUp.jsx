@@ -185,7 +185,7 @@ const SignUp = () => {
             ) : (
               <>
                 <img
-                  src="/images/google.svg"
+                  src="https://www.svgrepo.com/show/475656/google-color.svg"
                   alt="Google"
                   className="w-5 h-5"
                 />

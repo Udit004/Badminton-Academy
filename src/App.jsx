@@ -13,6 +13,7 @@ import Coaches from './pages/coaches'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import Dashboard from './pages/Dashboard'
+import Profile from './pages/Profile'
 
 const App = () => {
   return (
@@ -24,7 +25,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
-              <Route path="/coaches" element={<Coaches />} />
+              <Route path="/coaches" element={<ProtectedRoute><Coaches /></ProtectedRoute>} />
               <Route path="/contact" element={<Contact />} />
               <Route 
                 path="/programs" 
@@ -47,6 +48,14 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route 
+                path="/Profile" 
+                element={
+                  <ProtectedRoute>
+                    <Profile />
                   </ProtectedRoute>
                 }
               />

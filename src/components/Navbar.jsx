@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -21,7 +22,6 @@ const Navbar = () => {
   const navItems = [
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
-    { name: 'Dashboard', path: '/Dashboard' },
     { name: 'Programs', path: '/programs' },
     { name: 'Coaches', path: '/coaches' },
     { name: 'Schedule', path: '/schedule' }
@@ -136,7 +136,7 @@ const Navbar = () => {
                 alt="Badminton Academy"
                 className="h-10 w-auto"
               />
-              <span className="text-amber-500 font-bold text-xl hidden sm:block">
+              <span className="bg-gradient-to-r from-amber-400 via-text-amber-500 to-amber-600 text-transparent bg-clip-text font-bold text-xl  hover:scale-105 transition-all duration-300 hidden sm:block ">
                 Badminton Academy
               </span>
             </Link>
@@ -148,11 +148,20 @@ const Navbar = () => {
               <Link
                 key={item.name}
                 to={item.path}
-                className="text-gray-300 hover:text-amber-500 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300"
+                className={`text-gray-300 hover:text-amber-500 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300
+    ${location.pathname === item.path ? 'text-amber-500' : ''}`}
               >
                 {item.name}
               </Link>
             ))}
+            {user && (
+              <Link
+                to="/dashboard"
+                className="text-gray-300 hover:text-amber-500 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300"
+              >
+                Dashboard
+              </Link>
+            )}
             {renderAuthButtons()}
           </div>
 
@@ -161,6 +170,8 @@ const Navbar = () => {
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-300 hover:text-amber-500 p-2"
+              aria-label="Toggle menu"
+              aria-expanded={isMenuOpen}
             >
               <svg
                 className="h-6 w-6"
@@ -184,63 +195,81 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-black/60 backdrop-blur-sm border-t border-purple-500/20">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                className="text-gray-300 hover:text-amber-500 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
-            ))}
-            {user && (
-              <Link
-                to="/dashboard"
-                className="text-amber-500 hover:text-amber-400 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Dashboard
-              </Link>
-            )}
-          </div>
-          {/* Mobile Auth Buttons */}
-          <div className="px-2 pt-2 pb-3 border-t border-purple-500/20">
-            {user ? (
-              <div className="space-y-2">
-                <span className="text-gray-300 block px-3 py-2">
-                  Welcome, {user.email?.split('@')[0]}
-                </span>
-                <button
-                  onClick={() => {
-                    handleLogout();
-                    setIsMenuOpen(false);
-                  }}
-                  className="w-full text-left text-red-500 hover:text-red-400 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300"
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-2">
+        <div className="absolute top-20 left-4 right-4 md:hidden bg-black/80 backdrop-blur-sm border border-purple-500/20 rounded-lg shadow-lg overflow-hidden">
+          <div className="px-4 py-3">
+            {/* Navigation Links */}
+            <div className="space-y-1">
+              {navItems.map((item) => (
                 <Link
-                  to="/login"
-                  className="text-amber-500 hover:text-amber-400 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300"
+                  key={item.name}
+                  to={item.path}
+                  className={`block px-3 py-2 rounded-md text-base font-medium transition-all duration-300 ${
+                    location.pathname === item.path
+                      ? 'text-amber-500 bg-purple-500/10'
+                      : 'text-gray-300 hover:text-amber-500 hover:bg-purple-500/10'
+                  }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Sign in
+                  {item.name}
                 </Link>
+              ))}
+              {user && (
                 <Link
-                  to="/signup"
-                  className="text-amber-500 hover:text-amber-400 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-300"
+                  to="/dashboard"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-amber-500 hover:text-amber-400 hover:bg-purple-500/10 transition-all duration-300"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Sign up
+                  Dashboard
                 </Link>
-              </div>
-            )}
+              )}
+            </div>
+
+            {/* Auth Section */}
+            <div className="mt-4 pt-4 border-t border-purple-500/20">
+              {user ? (
+                <div className="space-y-2">
+                  <div className="px-3 py-2 text-sm text-gray-400">
+                    Signed in as{' '}
+                    <span className="text-amber-500">
+                      {user.email?.split('@')[0]}
+                    </span>
+                  </div>
+                  <Link
+                    to="/profile"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-amber-500 hover:bg-purple-500/10 transition-all duration-300"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Profile Settings
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-500 hover:text-red-400 hover:bg-purple-500/10 transition-all duration-300"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-2 px-3">
+                  <Link
+                    to="/login"
+                    className="text-center px-4 py-2 rounded-md text-sm font-medium text-amber-500 hover:text-amber-400 border border-amber-500/50 hover:bg-purple-500/10 transition-all duration-300"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Sign in
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="text-center px-4 py-2 rounded-md text-sm font-medium text-white bg-amber-500 hover:bg-amber-600 transition-all duration-300"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Sign up
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

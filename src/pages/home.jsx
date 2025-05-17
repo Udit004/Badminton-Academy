@@ -1,6 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom' 
 import Button from '../components/Button'
+import { useAuth } from '../context/authContext';
+
+
 const features = [
   {
     id: 1,
@@ -59,6 +62,8 @@ const programs = [
   }
 ]
 const Home = () => {
+
+    const { user } = useAuth();
     const navigate = useNavigate();
     
     return (
@@ -85,13 +90,24 @@ const Home = () => {
                         <p className='text-lg md:text-xl text-gray-200 mb-8 max-w-2xl text-center'>
                             Train with professional coaches and unlock your potential
                         </p>
-                        <Button 
+                        {(user)?(
+                          <Button 
                             variant="primary"
                             size="large"
                             onClick={() => navigate('/programs')}
                         >
                             Explore Programs
                         </Button>
+                        ) : (
+                          <Button 
+                            variant="primary"
+                            size="large"
+                            onClick={() => navigate('/SignUp')}
+                        >
+                            Sign Up
+                        </Button>
+                        )}
+                        
                     </div>
                 </div>
             </section>
