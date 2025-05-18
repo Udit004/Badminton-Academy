@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom' 
 import Button from '../components/Button'
+import RazorpayButton from '../components/RazorpayButton';
 // import { useAuth } from '../context/authContext';
 
 
@@ -213,10 +214,10 @@ const Home = () => {
                 </div>
               ))}
             </div>
-            {/* <div className='text-center justify-center justify-items-center'>
-                    <h3 className='text-3xl py-6 font-bold text-center justify-center text-blue-300'>Find more...</h3>
-                    <button onClick={() => navigate('/programs')} className='px-6 py-3 bg-amber-500 text-white font-semibold rounded-lg hover:bg-amber-600 transition-colors duration-300 shadow-lg hover:shadow-amber-500/20'>Programs</button>
-                    </div> */}
+            <div>
+              <h1 className="text-center mt-4 text-xl font-semibold">Join Badminton Academy</h1>
+              <RazorpayButton />
+            </div>
           </div>
         </section>
       </div>
