@@ -3,7 +3,7 @@ import React from 'react';
 const RazorpayButton = () => {
   const loadRazorpay = () => {
     const options = {
-      key: "rzp_test_BfjUjYWFzQaMNf", // Replace with your Razorpay Test Key
+      key: import.meta.env.VITE_ROZPAY_KEY_ID, // Replace with your Razorpay Test Key
       amount: 50000, // Amount in paise = ₹500.00
       currency: "INR",
       name: "Badminton Academy",
