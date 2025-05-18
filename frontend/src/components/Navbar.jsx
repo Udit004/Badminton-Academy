@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
-
+import apiService from '../services/apiService';
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -9,6 +9,23 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await apiService.getProfile();
+        setName(response.data.name);
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    if (user) {
+      fetchUserData();
+    }
+  })
+
 
   const handleLogout = async () => {
     try {
@@ -47,8 +64,10 @@ const Navbar = () => {
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="flex items-center space-x-2 text-gray-300 hover:text-amber-500 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300"
-          >
-            <span>{user.email?.split('@')[0]}</span>
+          >{!name?(<span>{user.email?.split('@')[0]}</span>
+          ):(<span>{name}</span>
+          )}
+            
             <svg
               className={`h-5 w-5 transform transition-transform duration-200 ${
                 isDropdownOpen ? 'rotate-180' : ''
@@ -230,9 +249,15 @@ const Navbar = () => {
                 <div className="space-y-2">
                   <div className="px-3 py-2 text-sm text-gray-400">
                     Signed in as{' '}
-                    <span className="text-amber-500">
+                    {!name?(<span className="text-amber-500">
                       {user.email?.split('@')[0]}
                     </span>
+                  ):(
+                    <span className="text-amber-500">
+                      {name}
+                    </span>
+                  )}
+                    
                   </div>
                   <Link
                     to="/profile"
