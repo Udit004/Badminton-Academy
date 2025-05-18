@@ -14,7 +14,10 @@ import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
-
+import TermsAndConditions from "./pages/TermsAndConditions";
+import CancellationAndRefund from "./pages/CancellationAndRefund";
+import ShippingAndDelivery from "./pages/ShippingAndDelivery";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 const App = () => {
   return (
     <AuthProvider>
@@ -27,6 +30,10 @@ const App = () => {
               <Route path="/about" element={<About />} />
               <Route path="/coaches" element={<ProtectedRoute><Coaches /></ProtectedRoute>} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+              <Route path="/cancellation-and-refund" element={<CancellationAndRefund />} />
+              <Route path="/shipping-and-delivery" element={<ShippingAndDelivery />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route 
                 path="/programs" 
                 element={

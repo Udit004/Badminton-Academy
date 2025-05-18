@@ -14,7 +14,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await apiService.getProfile();
+        const response = await apiService.getProfile(user.uid);
         setName(response.data.name);
       } catch (error) {
         console.error('Error fetching user profile:', error);
@@ -24,7 +24,7 @@ const Navbar = () => {
     if (user) {
       fetchUserData();
     }
-  })
+  }, [user]);
 
 
   const handleLogout = async () => {
