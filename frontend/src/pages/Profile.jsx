@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/authContext';
 import DashboardLayout from '../components/DashboardLayout';
-import apiService from '../services/apiService';
+import { api } from '../services/api';
 
 const Profile = () => {
     const { user } = useAuth();
@@ -14,6 +14,7 @@ const Profile = () => {
         age: '',
         experience: 'Beginner'
     });
+    const [showEditForm, setShowEditForm] = useState(false);
 
     useEffect(() => {
         if (user?.uid) {
@@ -25,7 +26,8 @@ const Profile = () => {
         try {
             setIsLoading(true);
             setError(''); // Clear previous errors
-            const data = await apiService.getProfile(user.uid);
+            const response = await api.get(`/users/profile/${user.uid}`);
+            const data = response.data; // Access the nested data object
             setProfileData({
                 name: data.name || '',
                 phone: data.phone || '',
@@ -70,18 +72,19 @@ const Profile = () => {
 
         try {
             // Call saveProfile which handles both create and update
-            const response = await apiService.saveProfile(payload);
+            const response = await api.put(`/users/profile/create/${user.uid}`, payload);
             
-            if (response && response.profile) {
+            if (response && response.data && response.data.profile) {
                  setProfileData({ 
-                    name: response.profile.name || '',
-                    phone: response.profile.phone || '',
-                    address: response.profile.address || '',
-                    age: response.profile.age !== null && response.profile.age !== undefined ? String(response.profile.age) : '',
-                    experience: response.profile.experience || 'Beginner',
+                    name: response.data.profile.name || '',
+                    phone: response.data.profile.phone || '',
+                    address: response.data.profile.address || '',
+                    age: response.data.profile.age !== null && response.data.profile.age !== undefined ? String(response.data.profile.age) : '',
+                    experience: response.data.profile.experience || 'Beginner',
                 });
             }
-            setError(response?.message || 'Profile saved successfully!');
+            setError(response?.data?.message || 'Profile saved successfully!');
+            setShowEditForm(false); // Switch back to display mode
         } catch (err) {
             console.error('Error saving profile:', err);
             if (err.response && err.response.data && err.response.data.message) {
@@ -96,7 +99,7 @@ const Profile = () => {
             }
         } finally {
             setIsLoading(false);
-        }
+        };
     };
 
     const handleChange = (e) => {
@@ -107,30 +110,70 @@ const Profile = () => {
         }));
     };
 
-    return (
-            <div className="max-w-4xl mx-auto">
-                <div className="bg-black/40 backdrop-blur-sm rounded-xl border border-purple-500/20 p-6 md:p-8">
-                    <h2 className="text-2xl font-bold text-amber-500 mb-6">Profile Settings</h2>
-                    {error && (
-                        <div className={`p-4 rounded-md mb-6 ${error.includes('success') ? 'bg-green-500/10 border border-green-500/20 text-green-500' : error.includes('Please complete your profile') ? 'bg-amber-500/10 border border-amber-500/20 text-amber-500' : 'bg-red-500/10 border border-red-500/20 text-red-500'}`}>
-                            {error}
-                        </div>
-                    )}
-                    
-                    {/* Profile Avatar Section */}
-                    <div className="flex items-center space-x-4 mb-8">
-                        <div className="w-20 h-20 rounded-full bg-purple-500/20 flex items-center justify-center">
-                            <span className="text-3xl text-amber-500">
-                                {user?.email?.[0]?.toUpperCase() || '?'}
-                            </span>
-                        </div>
-                        <div>
-                            <h3 className="text-amber-500 font-medium">{user?.email}</h3>
-                            <p className="text-gray-400 text-sm">Member since {new Date().getFullYear()}</p>
-                        </div>
-                    </div>
+    const handleEditClick = () => {
+        setShowEditForm(true);
+    };
 
-                    {/* Profile Form */}
+    const handleCancelClick = () => {
+        setShowEditForm(false);
+    };
+
+    return (
+        <div className="max-w-4xl mx-auto">
+            <div className="bg-black/40 backdrop-blur-sm rounded-xl border border-purple-500/20 p-6 md:p-8">
+                <h2 className="text-2xl font-bold text-amber-500 mb-6">Profile Settings</h2>
+                {error && (
+                    <div className={`p-4 rounded-md mb-6 ${error.includes('success') ? 'bg-green-500/10 border border-green-500/20 text-green-500' : error.includes('Please complete your profile') ? 'bg-amber-500/10 border border-amber-500/20 text-amber-500' : 'bg-red-500/10 border border-red-500/20 text-red-500'}`}>
+                        {error}
+                    </div>
+                )}
+
+                {/* Profile Avatar Section */}
+                <div className="flex items-center space-x-4 mb-8">
+                    <div className="w-20 h-20 rounded-full bg-purple-500/20 flex items-center justify-center">
+                        <span className="text-3xl text-amber-500">
+                            {user?.email?.[0]?.toUpperCase() || '?'}
+                        </span>
+                    </div>
+                    <div>
+                        <h3 className="text-amber-500 font-medium">{user?.email}</h3>
+                        <p className="text-gray-400 text-sm">Member since {new Date().getFullYear()}</p>
+                    </div>
+                </div>
+
+                {!showEditForm ? (
+                    <div className="space-y-6">
+                        <h3 className="text-xl font-semibold text-white mb-4">Your Profile Details</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-300">
+                            <div className="flex flex-col">
+                                <span className="text-sm font-medium text-gray-400">Full Name:</span>
+                                <span className="text-lg text-amber-500">{profileData.name || 'N/A'}</span>
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-sm font-medium text-gray-400">Phone Number:</span>
+                                <span className="text-lg text-amber-500">{profileData.phone || 'N/A'}</span>
+                            </div>
+                            <div className="flex flex-col md:col-span-2">
+                                <span className="text-sm font-medium text-gray-400">Address:</span>
+                                <span className="text-lg text-amber-500">{profileData.address || 'N/A'}</span>
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-sm font-medium text-gray-400">Age:</span>
+                                <span className="text-lg text-amber-500">{profileData.age || 'N/A'}</span>
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-sm font-medium text-gray-400">Experience Level:</span>
+                                <span className="text-lg text-amber-500">{profileData.experience || 'N/A'}</span>
+                            </div>
+                        </div>
+                        <button
+                            onClick={handleEditClick}
+                            className="mt-6 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300"
+                        >
+                            Edit Profile
+                        </button>
+                    </div>
+                ) : (
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
@@ -209,6 +252,13 @@ const Profile = () => {
 
                         <div className="flex justify-end pt-4">
                             <button
+                                type="button"
+                                onClick={handleCancelClick}
+                                className="mr-4 px-6 py-2.5 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors duration-300"
+                            >
+                                Cancel
+                            </button>
+                            <button
                                 type="submit"
                                 className="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-colors duration-300 disabled:opacity-50 flex items-center space-x-2"
                                 disabled={isLoading}
@@ -217,8 +267,9 @@ const Profile = () => {
                             </button>
                         </div>
                     </form>
-                </div>
+                )}
             </div>
+        </div>
     );
 };
 

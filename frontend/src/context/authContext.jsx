@@ -62,10 +62,20 @@ export const AuthProvider = ({children}) => {
     };
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
             setUser(user);
+            if (user) {
+                try {
+                    const token = await user.getIdToken();
+                    localStorage.setItem('token', token);
+                } catch (error) {
+                    console.error('Error getting ID token:', error);
+                }
+            } else {
+                localStorage.removeItem('token');
+            }
             setLoading(false);
-    });
+        });
         return unsubscribe;
     },[]);
 

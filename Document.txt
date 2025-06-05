@@ -1,0 +1,123 @@
+# Badminton Academy Project Progress Report
+
+**Project URL:** https://badminton-academy-chi.vercel.app/  
+**GitHub Repository:** https://github.com/Udit004/Badminton-Academy  
+**Date:** YYYY-MM-DD  
+**Prepared by:** Udit Kumar Tiwari
+
+---
+
+## 1. Project Overview
+
+The Badminton Academy website is a full-stack web application aimed at facilitating badminton coaching, student registrations, event management, and academy administration. The platform is designed to serve multiple user roles including students, coaches, and administrators, providing them with tailored functionalities.
+
+---
+
+## 2. Current Features Implemented
+
+### Frontend
+
+- **Responsive UI:**  
+  Built using React with responsive design principles ensuring usability on desktop and mobile devices.
+
+- **Authentication System:**  
+  User registration and login implemented with Firebase Authentication. Basic role-based access control differentiates between students and admin/coach roles.
+
+- **User Dashboard:**  
+  Personalized dashboards for users showing relevant data such as upcoming events, bookings, and notifications.
+
+- **Event Management:**  
+  Users can view academy events and training sessions. Admin can create and manage events through the dashboard.
+
+- **Booking System:**  
+  Students can register for coaching sessions/events via the platform.
+
+- **Navigation & Layout:**  
+  Clean, intuitive navigation with sidebar menus and responsive layouts for ease of use.
+
+---
+
+### Backend
+
+- **API Layer:**  
+  RESTful APIs built with Express.js to handle user data, events, and bookings.
+
+- **Database:**  
+  MongoDB used to persist user information, events, and session data.
+
+- **Authentication Middleware:**  
+  Protects private routes and validates user roles for access control.
+
+- **Data Validation & Error Handling:**  
+  Basic validation implemented for API endpoints to ensure data integrity.
+
+---
+
+## 3. Technology Stack
+
+| Layer           | Technology/Tool          |
+|-----------------|-------------------------|
+| Frontend        | React, CSS, Bootstrap   |
+| Backend         | Node.js, Express.js     |
+| Database        | MongoDB Atlas           |
+| Authentication  | Firebase Auth           |
+| Deployment      | Vercel                  |
+
+---
+
+## 4. Project Structure & Workflow
+
+- **Frontend:** Organized into components, pages, and utilities with React hooks for state management.  
+- **Backend:** MVC-inspired structure with separate folders for routes, controllers, and models.  
+- **Version Control:** GitHub used for source control with regular commits and feature branching.  
+- **Deployment:** Continuous deployment pipeline via Vercel ensures latest updates are live.
+
+---
+
+## 5. Achievements & Milestones
+
+- Successfully built a working prototype with multi-role authentication.  
+- Implemented key functionalities: event listing, registration, and basic admin controls.  
+- Achieved mobile responsiveness and cross-browser compatibility.  
+- Established a deployment workflow enabling quick iteration and feedback.
+
+---
+
+## 6. Current Challenges & Areas for Improvement
+
+- **Admin Panel:** Needs enhancement for complete user and event management.  
+- **Role-Based Access:** Require more robust and secure implementation with token refresh and session management.  
+- **Error Handling:** Centralize backend error handling and improve frontend user feedback.  
+- **Testing:** Lack of automated tests increases risk of bugs; unit and integration testing needed.  
+- **Performance:** Opportunities to optimize frontend rendering and backend query performance.  
+- **Documentation:** Expand API documentation and user guides.
+
+---
+
+## 7. Future Roadmap (To be updated)
+
+- Improve admin panel with analytics and bulk user management.  
+- Implement refresh token mechanism and advanced security features.  
+- Add notifications system for event reminders and announcements.  
+- Integrate payment gateway for session bookings.  
+- Add automated testing and CI/CD pipelines.  
+- Enhance UI/UX based on user feedback.  
+- Expand features for coaches, such as training progress tracking.
+
+---
+
+## 8. Notes for Ongoing Updates
+
+This document is designed as a living report to capture project progress and changes over time. As new features are implemented or improvements made, update sections 5–7 accordingly to maintain an accurate project status overview.
+
+---
+
+## 9. Recent Updates (Example)
+
+- YYYY-MM-DD: Added booking confirmation email notifications.  
+- YYYY-MM-DD: Fixed bug in event registration form validation.  
+- YYYY-MM-DD: Improved mobile responsiveness for dashboard pages.
+
+---
+
+*End of Report*

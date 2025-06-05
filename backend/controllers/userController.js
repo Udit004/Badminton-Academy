@@ -6,7 +6,7 @@ const User = require('../models/userModel');
 class UserController {
     static async createProfile(req, res) { // Handles create or update
         try {
-            const userId = req.user.uid;
+            const userId = req.params.uid;
             const { name, phone, address, age, experience } = req.body; // Use frontend field names
 
             let user = await User.findOne({ firebaseUid: userId });
@@ -73,7 +73,7 @@ class UserController {
     // Get user profile from MongoDB
     static async getProfile(req, res) {
         try {
-            const userId = req.user.uid; // UID from authenticated Firebase user
+            const userId = req.params.uid; // UID from authenticated Firebase user
             const userInDb = await User.findOne({ firebaseUid: userId });
 
             if (userInDb) {

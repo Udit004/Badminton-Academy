@@ -18,6 +18,7 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import CancellationAndRefund from "./pages/CancellationAndRefund";
 import ShippingAndDelivery from "./pages/ShippingAndDelivery";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import BookingPage from './pages/BookingPage.jsx'
 const App = () => {
   return (
     <AuthProvider>
@@ -55,6 +56,14 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route 
+                path="/BookingPage" 
+                element={
+                  <ProtectedRoute>
+                    <BookingPage />
                   </ProtectedRoute>
                 }
               />

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
-import apiService from '../services/apiService';
+import { api } from '../services/api';
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -14,8 +14,12 @@ const Navbar = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await apiService.getProfile(user.uid);
-        setName(response.data.name);
+
+        const response = await api.get(`/users/profile/${user.uid}`);
+        // Check if response exists and has name property
+        if (response && response.name) {
+          setName(response.name);
+        }
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }

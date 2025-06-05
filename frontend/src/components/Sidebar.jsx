@@ -45,7 +45,7 @@ export const Sidebar = () => {
         },
         {
             title: 'My Bookings',
-            path: '/dashboard/bookings',
+            path: '/BookingPage',
             icon: '📅'
         },
         {

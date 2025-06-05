@@ -1,36 +1,20 @@
+// routes/bookingRoutes.js
+
 const express = require('express');
 const router = express.Router();
+const verifyToken = require('../middleware/auth');
+const bookingController = require('../controllers/bookingController');
 
-// Get all bookings for a user
-router.get('/my-bookings', async (req, res) => {
-    try {
-        const userId = req.user.uid;
-        // TODO: Implement fetching bookings from database
-        res.json({
-            message: 'Bookings will be implemented here',
-            userId: userId
-        });
-    } catch (error) {
-        console.error('Error fetching bookings:', error);
-        res.status(500).json({ message: 'Error fetching bookings' });
-    }
-});
+// Public route - Check availability
+router.get('/availability', bookingController.checkAvailability);
 
-// Create a new booking
-router.post('/create', async (req, res) => {
-    try {
-        const userId = req.user.uid;
-        const { courtNumber, date, timeSlot } = req.body;
-
-        // TODO: Implement booking creation in database
-        res.json({
-            message: 'Booking creation will be implemented here',
-            booking: { userId, courtNumber, date, timeSlot }
-        });
-    } catch (error) {
-        console.error('Error creating booking:', error);
-        res.status(500).json({ message: 'Error creating booking' });
-    }
-});
+// Protected routes - Need authentication
+router.post('/', verifyToken, bookingController.createBooking);
+router.get('/user', verifyToken, bookingController.getUserBookings);
+router.patch('/:bookingId/cancel', verifyToken, bookingController.cancelBooking);
+router.patch('/:bookingId/payment', verifyToken, bookingController.updatePaymentStatus);
 
 module.exports = router;
+
+
+

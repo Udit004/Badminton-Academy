@@ -4,9 +4,10 @@ const verifyToken = require('../middleware/auth');
 const UserController = require('../controllers/userController');
 
 
-router.post('/profile', verifyToken, UserController.createProfile);
+
+router.put('/profile/create/:uid', verifyToken, UserController.createProfile);
 // Get user profile (protected route)
-router.get('/profile', verifyToken, UserController.getProfile);
+router.get('/profile/:uid', verifyToken, UserController.getProfile);
 
 
 module.exports = router;

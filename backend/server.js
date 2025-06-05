@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
  const connectDB = require('./config/db');
-const { verifyToken } = require('./middleware/authMiddleware');
+const verifyToken = require('./middleware/auth');
 require('./config/firebase'); // Initialize Firebase Admin
 
 dotenv.config();
@@ -25,8 +25,8 @@ app.get('/', (req, res) => {
 const userRoutes = require('./routes/usersroutes');
 const bookingRoutes = require('./routes/bookingroutes');
 
-app.use('/api/users', verifyToken, userRoutes);
-app.use('/api/booking', verifyToken, bookingRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/booking', bookingRoutes);
 
 const PORT = process.env.PORT;
 
