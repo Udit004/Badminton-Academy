@@ -2,7 +2,6 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/authContext.jsx'
 import ProtectedRoute from './components/ProtectedRoute'
-import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/home'
 import About from './pages/about'
@@ -12,6 +11,7 @@ import Schedule from './pages/schedule'
 import Coaches from './pages/coaches'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
+import AdminProtectedRoutes from './components/AdminProtectedRoutes';
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
 import TermsAndConditions from "./pages/TermsAndConditions";
@@ -19,12 +19,14 @@ import CancellationAndRefund from "./pages/CancellationAndRefund";
 import ShippingAndDelivery from "./pages/ShippingAndDelivery";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import BookingPage from './pages/BookingPage.jsx'
+import ConditionalNavbar from './components/ConditionalNavbar.jsx';
+
 const App = () => {
   return (
     <AuthProvider>
       <Router>
         <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
-          <Navbar />
+          <ConditionalNavbar />
           <main className="flex-grow container mx-auto px-4 py-8 text-white">
             <Routes>
               <Route path="/" element={<Home />} />
@@ -77,6 +79,7 @@ const App = () => {
               />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/admin/*" element={<AdminProtectedRoutes />} />
             </Routes>
           </main>
           <Footer />
